@@ -4,27 +4,24 @@ package com.ejemplo.demo.service;
 import com.ejemplo.demo.entity.Ticket;
 import com.ejemplo.demo.repository.TicketRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class TicketService  implements TicketServiceInterface {
 
     @Autowired
     private TicketRepository ticketRepository;
-    private List<Ticket> tickets = Arrays.asList(
+    private List<Ticket> tickets = new ArrayList<>(Arrays.asList(
             new Ticket(1,"abrir",1,"01-01-22","08-01-22","27-41800179-3"),
             new Ticket(2,"cerrar",3,"01-01-22","08-01-22","27-41800179-3"),
             new Ticket(3,"modificar",2,"01-01-22","08-01-22","27-41800179-3")
-    );
+    ));
 
-    @Override
+    /*@Override
     @Transactional(readOnly = true)
     public Iterable<Ticket> findAll() {
         return ticketRepository.findAll();
@@ -52,7 +49,7 @@ public class TicketService  implements TicketServiceInterface {
     @Transactional
     public void deleteById(Integer id) {
         ticketRepository.deleteById(id);
-    }
+    }*/
 
     /*public Ticket getTicket(Integer id) {
         return tickets.stream().filter(t->t.getCodigo().equals(id)).findFirst().get();
@@ -61,4 +58,30 @@ public class TicketService  implements TicketServiceInterface {
     /*public void addTicket(Ticket ticket) {
         tickets.add(ticket);
     }*/
+    @Override
+    public List<Ticket> getAllTickets(){
+        return tickets;
+    }
+    @Override
+    public Ticket getTicket(Integer id) {
+        return tickets.stream().filter(t->t.getCodigo().equals(id)).findFirst().get();
+    }
+    @Override
+    public void addTicket(Ticket ticket){
+        tickets.add(ticket);
+    }
+    @Override
+    public void updateTicket(Ticket ticket,Integer id){
+        for(int i = 0; i<tickets.size();i++){
+            Ticket t = tickets.get(i);
+            if(t.getCodigo().equals(id)){
+                tickets.set(i,ticket);
+            }
+        }
+    }
+
+    @Override
+    public void delete(Integer id){
+        tickets.removeIf(t->t.getCodigo().equals(id));
+    }
 }

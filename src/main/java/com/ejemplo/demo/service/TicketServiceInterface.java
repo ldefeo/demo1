@@ -4,14 +4,23 @@ import com.ejemplo.demo.entity.Ticket;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface TicketServiceInterface {
 
-    Iterable<Ticket> findAll();
+    /*Iterable<Ticket> findAll();
     Page<Ticket> findAll(Pageable pageable);
     Optional<Ticket> findById(Integer id);
     Ticket save(Ticket ticket);
-    void deleteById(Integer id);
+    void deleteById(Integer id);*/
+    List<Ticket> getAllTickets();
 
+    Ticket getTicket(Integer id);
+
+    void addTicket(Ticket ticket);
+
+    void updateTicket(Ticket ticket, Integer id);
+
+    void delete(Integer id);
 }

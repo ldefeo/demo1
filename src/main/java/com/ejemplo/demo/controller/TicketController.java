@@ -21,46 +21,28 @@ public class TicketController {
     private TicketService ticketService;
 
     @PostMapping
-    public ResponseEntity<?> create(@RequestBody Ticket ticket){
-      return ResponseEntity.status(HttpStatus.CREATED).body(ticketService.save(ticket));
+    public void addTicket(@RequestBody Ticket ticket){
+      ticketService.addTicket(ticket);
     }
 
     @GetMapping("/{id}") //get by id
-    public ResponseEntity<?> read(@PathVariable Integer id){
-        Optional<Ticket> oTicket = ticketService.findById(id);
-        if(!oTicket.isPresent()){
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(oTicket);
+    public Ticket getTicket(@PathVariable Integer id){
+        return ticketService.getTicket(id);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> update(@RequestBody Ticket ticketDetails,@PathVariable Integer id){
-        Optional<Ticket> ticket = ticketService.findById(id);
-        if(!ticket.isPresent()){
-            return ResponseEntity.notFound().build();
-        }
-        ticket.get().setDescripcion(ticketDetails.getDescripcion());
-        ticket.get().setSeveridad((ticketDetails.getSeveridad()));
-        ticket.get().setCUIT(ticketDetails.getCUIT());
-        ticket.get().setFechaDeCreacion(ticketDetails.getFechaDeCreacion());
-        ticket.get().setFechaDeFinalizacion(ticketDetails.getFechaDeFinalizacion());
-        return ResponseEntity.status(HttpStatus.CREATED).body(ticketService.save(ticket.get()));
+    public void update(@RequestBody Ticket ticket,@PathVariable Integer id){
+        ticketService.updateTicket(ticket,id);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> delete(@PathVariable Integer id){
-        if(!ticketService.findById(id).isPresent()){
-            return ResponseEntity.notFound().build();
-        }
-        ticketService.deleteById(id);
-        return ResponseEntity.ok().build();
+    public void delete(@PathVariable Integer id){
+        ticketService.delete(id);
     }
 
     @GetMapping //todos los tickets
-    public List<Ticket> readAllTickets(){
-        List<Ticket> tickets = StreamSupport.stream(ticketService.findAll().spliterator(),false).collect(Collectors.toList());
-        return tickets;
+    public List<Ticket> getAllTickets(){
+        return ticketService.getAllTickets();
     }
 
     /*@RequestMapping("/tickets")
