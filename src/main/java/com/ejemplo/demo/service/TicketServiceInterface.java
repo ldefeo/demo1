@@ -1,8 +1,6 @@
 package com.ejemplo.demo.service;
 
 import com.ejemplo.demo.entity.Ticket;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 import java.util.Optional;
@@ -16,7 +14,7 @@ public interface TicketServiceInterface {
     void deleteById(Integer id);*/
     List<Ticket> getAllTickets();
 
-    Ticket getTicket(Integer id);
+    Optional<Ticket> getTicket(Integer id);
 
     void addTicket(Ticket ticket);
 
